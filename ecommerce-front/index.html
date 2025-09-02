@@ -1,29 +1,42 @@
-<
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pagina.default</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
-
-
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="/src/style.css" rel="stylesheet">
+  <title>Banz - Tienda</title>
+  <!-- CDN de TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h1 class="text-3xl font-bold underline">
-    Hello world! mira loco aca hay un carrito
-  </h1>
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- HEADER / NAVBAR -->
+  <header class="bg-white shadow-md">
+    <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+      <!-- Logo -->
+      <h1 class="text-2xl font-bold text-blue-600"> Banz </h1>
+
+      <!-- Menú de navegación -->
+      <nav class="space-x-4">
+        <a href="#" class="hover:text-blue-600">Inicio</a>
+        <a href="#" class="hover:text-blue-600">Productos</a>
+        <a href="#" class="hover:text-blue-600">Carrito</a>
+        <a href="#" class="hover:text-blue-600">Contacto</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO (presentación principal) -->
+  <section class="bg-blue-600 text-white text-center py-16">
+    <h2 class="text-4xl font-bold mb-4">Bienvenido a Banz</h2>
+    <p class="mb-6">Ropa balata echa por ninios esclavos en la india</p>
+    <a href="#productos" class="bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-gray-200">Ver productos</a>
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer class="bg-gray-800 text-white text-center py-6 mt-10">
+    <p>&copy; 2025 Banz. Todos los derechos reservados.</p>
+  </footer>
+
 </body>
 </html>
