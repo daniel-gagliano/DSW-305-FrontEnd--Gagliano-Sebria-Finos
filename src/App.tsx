@@ -7,7 +7,13 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
+    <div className="flex h-screen items-center justify-center bg-gray-100">
+      <h1 className="text-4xl font-bold text-blue-600">
+        🚀 Mi Ecommerce
+      </h1>
+    </div>
+  )
+    /*
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -28,8 +34,8 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
-    </>
-  )
+    </> */
+  
 }
 
 export default App
