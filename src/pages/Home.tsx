@@ -1,68 +1,110 @@
 // src/pages/Home.tsx
-import { Link } from "react-router-dom"
+import Navbar from "../components/Navbar";
+import ProductCard from "../components/ProductCard";
+import { useState } from "react";
+
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+  imageUrl: string;
+  freeShipping?: boolean;
+  installment?: string;
+};
+
+// Productos simulados
+const products: Product[] = [
+  { id: 1, name: "Playa Azul", price: 1990, imageUrl: "https://picsum.photos/seed/1/400/400", freeShipping: true, installment: "3x $663.33" },
+  { id: 2, name: "Sayulita", price: 1990, imageUrl: "https://picsum.photos/seed/2/400/400", freeShipping: true, installment: "3x $663.33" },
+  { id: 3, name: "Poncho Kids", price: 960, imageUrl: "https://picsum.photos/seed/3/400/400", freeShipping: true, installment: "3x $320" },
+  { id: 4, name: "Poncho Teens", price: 990, imageUrl: "https://picsum.photos/seed/4/400/400", freeShipping: true, installment: "3x $330" },
+  // agregá más productos
+];
+
+const colors = ["Amarillo", "Azul", "Beige", "Celeste", "Gris", "Lila", "Naranja", "Negro"];
+const sizes = ["S", "M", "L", "XL"];
 
 const Home = () => {
+  const [selectedColor, setSelectedColor] = useState<string | null>(null);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
+
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Hero */}
-      <section className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white py-20 px-6 text-center">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          Bienvenido a Mi E-Commerce
-        </h1>
-        <p className="text-lg md:text-xl mb-6">
-          Encuentra los mejores productos al mejor precio 🚀
-        </p>
-        <Link
-          to="/products"
-          className="bg-white text-indigo-600 font-semibold px-6 py-3 rounded-full shadow-md hover:bg-gray-100 transition"
-        >
-          Ver Productos
-        </Link>
-      </section>
+    <div className="min-h-screen bg-gray-50">
+      <Navbar />
 
-      {/* Productos destacados */}
-      <section className="flex-1 max-w-6xl mx-auto py-12 px-6">
-        <h2 className="text-2xl font-bold mb-8 text-gray-800">
-          Productos Destacados
-        </h2>
-        <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3">
-          {/* Cards de productos */}
-          {[1, 2, 3].map((id) => (
-            <div
-              key={id}
-              className="bg-white rounded-xl shadow hover:shadow-lg transition p-4"
-            >
-              <img
-                src={`https://picsum.photos/seed/${id}/400/300`}
-                alt={`Producto ${id}`}
-                className="rounded-lg mb-4"
-              />
-              <h3 className="font-semibold text-lg text-gray-800">
-                Producto {id}
-              </h3>
-              <p className="text-gray-500 text-sm mb-2">
-                Descripción breve del producto {id}.
-              </p>
-              <span className="block font-bold text-indigo-600 mb-4">
-                ${id * 1000}
-              </span>
-              <button className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition">
-                Agregar al carrito
-              </button>
-            </div>
-          ))}
-        </div>
-      </section>
+      <div className="flex max-w-7xl mx-auto py-12 px-6">
+        {/* Sidebar filtros */}
+        <aside className="w-64 mr-8">
+          <h2 className="font-bold mb-4">Filtros</h2>
 
-      {/* Footer */}
-      <footer className="bg-gray-100 text-gray-600 text-center py-6">
-        <p className="text-sm">
-          © {new Date().getFullYear()} Mi E-Commerce. Todos los derechos
-          reservados.
-        </p>
-      </footer>
+          <div className="mb-6">
+            <h3 className="font-semibold mb-2">Color</h3>
+            {colors.map((color) => (
+              <label key={color} className="block mb-1">
+                <input
+                  type="checkbox"
+                  value={color}
+                  checked={selectedColor === color}
+                  onChange={() => setSelectedColor(selectedColor === color ? null : color)}
+                  className="mr-2"
+                />
+                {color}
+              </label>
+            ))}
+          </div>
+
+          <div className="mb-6">
+            <h3 className="font-semibold mb-2">Talla</h3>
+            {sizes.map((size) => (
+              <label key={size} className="block mb-1">
+                <input
+                  type="checkbox"
+                  value={size}
+                  checked={selectedSize === size}
+                  onChange={() => setSelectedSize(selectedSize === size ? null : size)}
+                  className="mr-2"
+                />
+                {size}
+              </label>
+            ))}
+          </div>
+        </aside>
+
+        {/* Grid productos */}
+        <main className="flex-1">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl font-bold">Todos los Productos</h2>
+            <select className="border border-gray-300 rounded px-3 py-1">
+              <option>Más Vendidos</option>
+              <option>Menor Precio</option>
+              <option>Mayor Precio</option>
+            </select>
+          </div>
+
+          <div className="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+            {products.map((product) => (
+              <div key={product.id} className="bg-white p-4 rounded shadow hover:shadow-lg transition flex flex-col">
+                <img src={product.imageUrl} alt={product.name} className="h-64 w-full object-cover rounded mb-4" />
+                {product.freeShipping && (
+                  <span className="text-sm bg-gray-100 text-gray-700 px-2 py-1 rounded mb-2 inline-block">
+                    Envío Gratis
+                  </span>
+                )}
+                <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
+                <span className="font-bold text-indigo-600 mb-1">${product.price}</span>
+                {product.installment && (
+                  <span className="text-sm text-gray-500 mb-2">{product.installment}</span>
+                )}
+                <button className="mt-auto bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition">
+                  Agregar al carrito
+                </button>
+              </div>
+            ))}
+          </div>
+        </main>
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
