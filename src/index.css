@@ -1,7 +1,7 @@
 /* Tailwind base, componentes y utilidades */
 @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; 
 
 /* Variables globales */
 :root {
