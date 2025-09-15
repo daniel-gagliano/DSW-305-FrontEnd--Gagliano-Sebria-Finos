@@ -1,8 +1,9 @@
+/* Tailwind base, componentes y utilidades */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-
+/* Variables globales */
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -18,6 +19,7 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Enlaces */
 a {
   font-weight: 500;
   color: #646cff;
@@ -27,19 +29,22 @@ a:hover {
   color: #535bf2;
 }
 
+/* Body */
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #242424;
+  font-family: inherit;
 }
 
+/* Encabezados */
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
 }
 
+/* Botones */
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -49,7 +54,7 @@ button {
   font-family: inherit;
   background-color: #1a1a1a;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: border-color 0.25s, background-color 0.25s;
 }
 button:hover {
   border-color: #646cff;
@@ -59,6 +64,7 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* Modo claro */
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

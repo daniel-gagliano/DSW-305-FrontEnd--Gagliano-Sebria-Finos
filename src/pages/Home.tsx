@@ -9,8 +9,8 @@ type Product = {
   installment?: string;
 };
 
-// 9 productos de ejemplo
-const products: Product[] = Array.from({ length: 9 }, (_, i) => ({
+// 12 productos de ejemplo para llenar 4x3
+const products: Product[] = Array.from({ length: 12 }, (_, i) => ({
   id: i + 1,
   name: `Producto ${i + 1}`,
   price: 1000 + i * 100,
@@ -33,8 +33,8 @@ const Home = () => {
           </select>
         </div>
 
-        {/* Grid responsive que ocupa todo el ancho */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 w-full">
+        {/* Grid responsive 4x3 */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
           {products.map((product) => (
             <div
               key={product.id}
@@ -42,7 +42,7 @@ const Home = () => {
             >
               {/* Rectángulo de color */}
               <div
-                className="h-40 w-full rounded mb-4"
+                className="h-32 w-full rounded mb-4"
                 style={{ backgroundColor: `hsl(${(product.id * 40) % 360}, 70%, 70%)` }}
               ></div>
 
