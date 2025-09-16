@@ -1,24 +1,39 @@
-// src/pages/Home.tsx
+import React, { useState, useEffect } from "react";
 import Navbar from "../components/Navbar";
 
-type Product = {
-  id: number;
-  name: string;
-  price: number;
-  freeShipping?: boolean;
-  installment?: string;
-};
-
-// 12 productos de ejemplo para llenar 4x3
-const products: Product[] = Array.from({ length: 12 }, (_, i) => ({
-  id: i + 1,
-  name: `Producto ${i + 1}`,
-  price: 1000 + i * 100,
-  freeShipping: i % 2 === 0,
-  installment: `3x $${Math.floor((1000 + i * 100) / 3)}`,
-}));
+// Define la estructura de un artículo para TypeScript
+// Asegúrate de que estos campos coincidan con los que devuelve tu backend
+interface Articulo {
+  id_articulo: number;
+  nombre: string;
+  descripcion: string;
+  stock: number;
+  precio: number;
+}
 
 const Home = () => {
+  const [articulos, setArticulos] = useState<Articulo[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+
+  useEffect(() => {
+    const obtenerArticulos = async () => {
+      try {
+        const response = await fetch("http://localhost:3000/articulos");
+        if (!response.ok) {
+          throw new Error("Error al obtener los artículos");
+        }
+        const data: Articulo[] = await response.json();
+        setArticulos(data);
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    obtenerArticulos();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <Navbar />
@@ -33,35 +48,32 @@ const Home = () => {
           </select>
         </div>
 
-        {/* Grid responsive 4x3 */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
-          {products.map((product) => (
-            <div
-              key={product.id}
-              className="bg-white p-4 rounded shadow hover:shadow-lg transition flex flex-col"
-            >
-              {/* Rectángulo de color */}
+        {loading ? (
+          <div className="text-center text-lg">Cargando productos...</div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
+            {articulos.map((articulo) => (
               <div
-                className="h-32 w-full rounded mb-4"
-                style={{ backgroundColor: `hsl(${(product.id * 40) % 360}, 70%, 70%)` }}
-              ></div>
+                key={articulo.id_articulo}
+                className="bg-white p-4 rounded shadow hover:shadow-lg transition flex flex-col"
+              >
+                <div
+                  className="h-32 w-full rounded mb-4"
+                  style={{ backgroundColor: `#${Math.floor(Math.random() * 16777215).toString(16)}` }}
+                ></div>
 
-              {product.freeShipping && (
-                <span className="text-sm bg-gray-100 text-gray-700 px-2 py-1 rounded mb-2 inline-block">
-                  Envío Gratis
-                </span>
-              )}
-              <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
-              <span className="font-bold text-indigo-600 mb-1">${product.price}</span>
-              {product.installment && (
-                <span className="text-sm text-gray-500 mb-2">{product.installment}</span>
-              )}
-              <button className="mt-auto bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition">
-                Agregar al carrito
-              </button>
-            </div>
-          ))}
-        </div>
+                <h3 className="font-semibold text-lg mb-1">{articulo.nombre}</h3>
+                <span className="font-bold text-indigo-600 mb-1">${articulo.precio}</span>
+                <p className="text-sm text-gray-500 mb-2">{articulo.descripcion}</p>
+                <p className="text-sm text-gray-500 mb-2">Stock: {articulo.stock}</p>
+
+                <button className="mt-auto bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition">
+                  Agregar al carrito
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
