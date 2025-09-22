@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom"; // 👈 IMPORTANTE
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -7,7 +8,6 @@ export default function Login() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Login:", { email, password });
-    // acá iría tu lógica de autenticación
   };
 
   return (
@@ -52,9 +52,9 @@ export default function Login() {
         </form>
         <p className="text-center text-sm text-gray-600 mt-4">
           ¿No tenés cuenta?{" "}
-          <a href="#" className="text-blue-600 hover:underline">
+          <Link to="/Register" className="text-blue-600 hover:underline">
             Registrate
-          </a>
+          </Link>
         </p>
       </div>
     </div>
