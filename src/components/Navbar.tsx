@@ -8,7 +8,7 @@ const Navbar = () => {
         Mi Tienda
       </Link>
       <div className="space-x-4">
-        <Link to="/" className="text-gray-700 hover:text-indigo-600">
+        <Link to="/Login" className="text-gray-700 hover:text-indigo-600">
           Login
         </Link>
         <Link to="/products" className="text-gray-700 hover:text-indigo-600">
