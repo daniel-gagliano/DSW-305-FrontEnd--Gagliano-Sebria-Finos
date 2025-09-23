@@ -1,14 +1,9 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-100">
-      <h1 className="text-4xl font-bold text-blue-600">
+    <div className="flex h-screen items-center justify-center bg-[var(--color-very-dark)]">
+      <h1 className="text-4xl font-bold text-[var(--color-sky)]">
         🚀 Mi Ecommerce
       </h1>
     </div>

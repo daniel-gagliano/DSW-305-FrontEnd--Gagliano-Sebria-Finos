@@ -23,13 +23,13 @@ const products: Product[] = Array.from({ length: 12 }, (_, i) => ({
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen app-bg">
       <Navbar />
 
       <div className="w-full py-12 px-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-bold">Todos los Productos</h2>
-          <select className="border border-gray-300 rounded px-3 py-1">
+          <h2 className="text-2xl font-bold text-[var(--color-pale)]">Todos los Productos</h2>
+          <select className="border border-transparent rounded px-3 py-1 bg-[var(--color-pale)] text-[var(--color-very-dark)]">
             <option>Más Vendidos</option>
             <option>Menor Precio</option>
             <option>Mayor Precio</option>
@@ -41,7 +41,7 @@ const Home = () => {
           {products.map((product) => (
             <div
               key={product.id}
-              className="bg-white p-4 rounded shadow hover:shadow-lg transition flex flex-col"
+              className="card p-4 rounded shadow hover:shadow-lg transition flex flex-col"
             >
               {/* Rectángulo de color */}
               <div
@@ -50,16 +50,16 @@ const Home = () => {
               ></div>
 
               {product.freeShipping && (
-                <span className="text-sm bg-gray-100 text-gray-700 px-2 py-1 rounded mb-2 inline-block">
+                <span className="text-sm bg-[var(--color-pale)] text-[var(--color-very-dark)] px-2 py-1 rounded mb-2 inline-block">
                   Envío Gratis
                 </span>
               )}
               <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
-              <span className="font-bold text-indigo-600 mb-1">${product.price}</span>
+              <span className="font-bold text-[var(--color-sky)] mb-1">${product.price}</span>
               {product.installment && (
-                <span className="text-sm text-gray-500 mb-2">{product.installment}</span>
+                <span className="text-sm text-[var(--color-pale)] mb-2">{product.installment}</span>
               )}
-              <button className="mt-auto bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700 transition">
+              <button className="mt-auto btn-primary py-2 px-4 rounded hover:bg-[var(--color-navy)] transition">
                 Agregar al carrito
               </button>
             </div>

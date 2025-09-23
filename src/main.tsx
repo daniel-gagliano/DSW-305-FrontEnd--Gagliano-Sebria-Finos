@@ -7,23 +7,27 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import Register from "./pages/Register";
+import { CartProvider } from "./store/cartContext";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      {/* Navbar siempre visible */}
-      <Navbar />
+      <CartProvider>
+        {/* Navbar siempre visible y fija */}
+        <Navbar />
 
-      {/* Contenido de las páginas cambia según la ruta */}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/register" element={<Register />} /> 
-
-      
-
-      </Routes>
+        {/* Añadimos padding-top para que el contenido no quede debajo del navbar fijo */}
+        <div className="pt-20">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/productos" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/register" element={<Register />} />
+          </Routes>
+        </div>
+      </CartProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
+
