@@ -11,19 +11,19 @@ const Cart: React.FC = () => {
     updateItem(id, cantidad);
   };
 
-  const handleEliminar = (id: number) => removeItem(id);
+  const handleEliminar = (id: number) => removeItem(id); //cuando elimina el articulo lo elimina por la id
 
   const handleCheckout = async () => {
     if (items.length === 0) return;
     setLoading(true);
     try {
-      // construir linea_pedido según el backend: { id_articulo, cantidad, sub_total }
+      // se construye la linea_pedido según el backend: { id_articulo, cantidad, sub_total }
       const linea_pedido = items.map(i => ({ id_articulo: i.id_articulo, cantidad: i.cantidad, sub_total: i.precio * i.cantidad }));
 
       const payload = {
-        id_metodo: 1, // demo/default
-        nro_usuario: 1, // demo user id — replace with auth user id when available
-        id_localidad: 1, // demo/default
+        id_metodo: 1, // por defecto toma tarjeta de credito, hay que cambiarlo en un futuro
+        nro_usuario: 1, // de momento toma al user 1 (cliente) por defecto
+        id_localidad: 1, // por defecto toma Rosario
         linea_pedido
       };
 
