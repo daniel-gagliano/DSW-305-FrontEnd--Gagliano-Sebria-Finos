@@ -27,6 +27,7 @@ const Cart: React.FC = () => {
         linea_pedido
       };
 
+      
       const res = await axiosClient.post('/pedidos', payload);
       if (res.status === 200 || res.status === 201) {
         clear();
