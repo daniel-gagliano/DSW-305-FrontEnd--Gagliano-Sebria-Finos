@@ -1,6 +1,6 @@
 // este componente es el formulario de login/registro rápido
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axiosClient from "../api/axiosClient"; // cliente central para llamar al back
 
 export default function Login() {
@@ -9,7 +9,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
-  // no redirigimos por ahora, solo mostramos el toast
+  const navigate = useNavigate();
 
   // handleSubmit: cuando el usuario aprieta Entrar
   // ahora usamos el endpoint POST /usuarios/login que valida credenciales
@@ -20,10 +20,15 @@ export default function Login() {
     try {
       // hago POST /usuarios/login con email y password
       const resp = await axiosClient.post('/usuarios/login', { email, password });
-      if (resp.status === 200) {
-        // muestro un toast corto
+      if (resp.status === 200 && resp.data.user) {
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('userId', resp.data.user.id);
+        if (resp.data.token) localStorage.setItem('token', resp.data.token);
         setToast('Inicio de sesión exitoso');
-        setTimeout(() => setToast(null), 1200);
+        setTimeout(() => {
+          setToast(null);
+          navigate('/productos');
+        }, 1200);
       }
     } catch (err: any) {
       //mensaje amigable si algo sale mal
@@ -37,7 +42,7 @@ export default function Login() {
     <div className="flex items-center justify-center min-h-screen app-bg">
       <div className="w-full max-w-sm p-6 card card--outlined">
         <h2 className="text-2xl font-bold text-center mb-6 text-[var(--color-pale)]">Iniciar Sesión</h2>
-  <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium label-muted">
               Email
@@ -70,11 +75,11 @@ export default function Login() {
             type="submit"
             className="w-full btn-primary py-2 px-4 rounded-lg hover:bg-[var(--color-navy)] transition"
           >
-      {loading ? 'Enviando...' : 'Entrar'}
+            {loading ? 'Enviando...' : 'Entrar'}
           </button>
         </form>
-    {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
-  {toast && <div className="fixed bottom-6 right-6 toast-success">{toast}</div>}
+        {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+        {toast && <div className="fixed bottom-6 right-6 toast-success">{toast}</div>}
         <p className="text-center text-sm text-[var(--color-pale)] mt-4">
           ¿No tenés cuenta?{" "}
           <Link to="/Register" className="text-[var(--color-sky)] hover:underline">
