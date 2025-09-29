@@ -47,7 +47,7 @@ export default function Login() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="mt-1 block w-full input-default shadow-sm focus:border-[var(--color-sky)] focus:ring focus:ring-[var(--color-sky)] focus:ring-opacity-30"
-              placeholder="ejemplo@mail.com"
+              placeholder=""
               required
             />
           </div>

@@ -57,16 +57,13 @@ export default function Register() {
         <h2 className="text-2xl font-bold text-center mb-6 text-[var(--color-pale)]">Registrarse</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium label-muted">Nombre</label>
-            <label className="block text-sm font-medium label-muted">Email</label>
-            <label className="block text-sm font-medium label-muted">Contraseña</label>
-            <label className="block text-sm font-medium label-muted">Confirmar Contraseña</label>
+            <label className="block text-sm font-medium label-muted">Nombre</label>  
             <input
               type="text"
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
-              className="mt-1 block w-full input-default shadow-sm focus:border-[var(--color-sky)] focus:ring focus:ring-[var(--color-sky)] focus:ring-opacity-30"
-              placeholder="Tu nombre"
+               className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 p-2"
+              placeholder=""
               required
             />
           </div>
@@ -78,7 +75,7 @@ export default function Register() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-300 focus:ring-opacity-50 p-2"
-              placeholder="ejemplo@mail.com"
+              placeholder=""
               required
             />
           </div>

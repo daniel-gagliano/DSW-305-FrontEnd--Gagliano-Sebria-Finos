@@ -87,7 +87,7 @@ button:focus-visible {
   }
 }
 
-/* Theme helper classes (usar en componentes para homogeneizar tema oscuro) */
+/* usar en componentes para homogeneizar tema oscuro */
 .app-bg {
   background-color: var(--color-very-dark) !important;
   color: var(--color-pale) !important;

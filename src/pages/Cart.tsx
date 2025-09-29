@@ -21,9 +21,9 @@ const Cart: React.FC = () => {
       const linea_pedido = items.map(i => ({ id_articulo: i.id_articulo, cantidad: i.cantidad, sub_total: i.precio * i.cantidad }));
 
       const payload = {
-        id_metodo: 1, // demo/default
-        nro_usuario: 1, // demo user id — replace with auth user id when available
-        id_localidad: 1, // demo/default
+        id_metodo: 1, // Hardcodeado para probar
+        nro_usuario: 1, //  Hardcodeado para probar
+        id_localidad: 1, //  Hardcodeado para probar
         linea_pedido
       };
 
