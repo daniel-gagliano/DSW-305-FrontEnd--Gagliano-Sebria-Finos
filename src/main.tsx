@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import Register from "./pages/Register";
 import { CartProvider } from "./store/cartContext";
+import HistorialPedidos from "./pages/HistorialPedidos"; // <-- 1. IMPORTAR LA NUEVA PÁGINA
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -24,10 +25,10 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Route path="/login" element={<Login />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/historial-pedidos" element={<HistorialPedidos />} /> {/* <-- 2. AÑADIR LA NUEVA RUTA */}
           </Routes>
         </div>
       </CartProvider>
     </BrowserRouter>
   </React.StrictMode>
 );
-
