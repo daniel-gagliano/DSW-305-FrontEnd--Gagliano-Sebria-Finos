@@ -87,7 +87,7 @@ const Checkout: React.FC = () => {
               Número de pedido: <strong>#{datosPedido.nro_pedido}</strong>
             </p>
             <p className="text-[var(--color-pale)] mb-6">
-              Recibirás un email con los detalles de tu compra
+              ¡Gracias por tu compra!
             </p>
             <button
               onClick={() => navigate('/')}

@@ -57,10 +57,7 @@ export default function Register() {
         <h2 className="text-2xl font-bold text-center mb-6 text-[var(--color-pale)]">Registrarse</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium label-muted">Nombre</label>
-            <label className="block text-sm font-medium label-muted">Email</label>
-            <label className="block text-sm font-medium label-muted">Contraseña</label>
-            <label className="block text-sm font-medium label-muted">Confirmar Contraseña</label>
+
             <input
               type="text"
               value={nombre}

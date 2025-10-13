@@ -10,6 +10,13 @@ interface Pedido {
     id_articulo: number;
     cantidad: number;
     sub_total: number;
+    articulo: {
+      id_articulo: number;
+      nombre: string;
+      descripcion: string;
+      precio: number;
+      stock: number;
+    };
   }[];
 }
 
@@ -65,7 +72,7 @@ const HistorialPedidos = () => {
               <ul>
                 {pedido.linea_pedido.map((linea, index) => (
                   <li key={index} className="flex justify-between text-sm text-gray-700">
-                    <span>Artículo ID: {linea.id_articulo} (x{linea.cantidad})</span>
+                    <span>{linea.articulo.nombre} (x{linea.cantidad})</span>
                     <span>${linea.sub_total.toFixed(2)}</span>
                   </li>
                 ))}
