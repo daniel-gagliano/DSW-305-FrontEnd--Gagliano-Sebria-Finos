@@ -1,7 +1,7 @@
-// este componente es el formulario de login/registro rápido
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axiosClient from "../api/axiosClient"; // cliente central para llamar al back
+import axiosClient from "../api/axiosClient";
+import { useAuth } from "../store/authContext"; // AGREGAR ESTA LÍNEA
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,20 +10,24 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { login } = useAuth(); // AGREGAR ESTA LÍNEA
 
-  // handleSubmit: cuando el usuario aprieta Entrar
-  // ahora usamos el endpoint POST /usuarios/login que valida credenciales
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
     try {
-      // hago POST /usuarios/login con email y password
       const resp = await axiosClient.post('/usuarios/login', { email, password });
       if (resp.status === 200 && resp.data.user) {
-        localStorage.setItem('isLoggedIn', 'true');
-        localStorage.setItem('userId', resp.data.user.id);
-        if (resp.data.token) localStorage.setItem('token', resp.data.token);
+        // Usar el método login del contexto en lugar de localStorage directo
+        const userName = resp.data.user.name || resp.data.user.email || 'Usuario';
+        login(resp.data.user.id.toString(), userName);
+        
+        // Guardar token si existe
+        if (resp.data.token) {
+          localStorage.setItem('token', resp.data.token);
+        }
+        
         setToast('Inicio de sesión exitoso');
         setTimeout(() => {
           setToast(null);
@@ -31,7 +35,6 @@ export default function Login() {
         }, 1200);
       }
     } catch (err: any) {
-      //mensaje amigable si algo sale mal
       setError(err?.response?.data?.error || err.message || 'Error en el login');
     } finally {
       setLoading(false);
@@ -73,7 +76,8 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full btn-primary py-2 px-4 rounded-lg hover:bg-[var(--color-navy)] transition"
+            disabled={loading}
+            className="w-full btn-primary py-2 px-4 rounded-lg hover:bg-[var(--color-navy)] transition disabled:opacity-60"
           >
             {loading ? 'Enviando...' : 'Entrar'}
           </button>
@@ -82,7 +86,7 @@ export default function Login() {
         {toast && <div className="fixed bottom-6 right-6 toast-success">{toast}</div>}
         <p className="text-center text-sm text-[var(--color-pale)] mt-4">
           ¿No tenés cuenta?{" "}
-          <Link to="/Register" className="text-[var(--color-sky)] hover:underline">
+          <Link to="/register" className="text-[var(--color-sky)] hover:underline">
             Registrate
           </Link>
         </p>

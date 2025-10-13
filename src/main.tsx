@@ -10,27 +10,29 @@ import Register from "./pages/Register";
 import Checkout from "./pages/Checkout"; // <-- AGREGAR ESTA LÍNEA
 import { CartProvider } from "./store/cartContext";
 import HistorialPedidos from "./pages/HistorialPedidos";
+import { AuthProvider } from "./store/authContext";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <BrowserRouter>
-      <CartProvider>
-        {/* Navbar siempre visible y fija */}
-        <Navbar />
+      <AuthProvider> {/* AGREGAR */}
+        <CartProvider>
+          <Navbar />
+          <div className="pt-20">
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/productos" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/cart" element={<Cart />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/checkout" element={<Checkout />} /> {/* <-- AGREGAR ESTA RUTA */}
+              <Route path="/historial-pedidos" element={<HistorialPedidos />} />
+            </Routes>
+          </div>
 
-        {/* Añadimos padding-top para que el contenido no quede debajo del navbar fijo */}
-        <div className="pt-20">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/productos" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/checkout" element={<Checkout />} /> {/* <-- AGREGAR ESTA RUTA */}
-            <Route path="/historial-pedidos" element={<HistorialPedidos />} />
-          </Routes>
-        </div>
-      </CartProvider>
+        </CartProvider>
+      </AuthProvider> {/* AGREGAR */}
     </BrowserRouter>
   </React.StrictMode>
+
 );
