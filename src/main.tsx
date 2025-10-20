@@ -8,7 +8,8 @@ import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import Register from "./pages/Register";
 import Checkout from "./pages/Checkout";
-import ProductDetail from "./pages/ProductDetail"; // ← AGREGAR ESTA LÍNEA
+import ProductDetail from "./pages/ProductDetail";
+import Inventory from "./pages/Inventory"; // ← AGREGAR ESTA LÍNEA
 import { CartProvider } from "./store/cartContext";
 import HistorialPedidos from "./pages/HistorialPedidos";
 import { AuthProvider } from "./store/authContext";
@@ -23,12 +24,13 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/productos" element={<Home />} />
-              <Route path="/product/:id" element={<ProductDetail />} /> {/* ← AGREGAR ESTA RUTA */}
+              <Route path="/product/:id" element={<ProductDetail />} />
               <Route path="/login" element={<Login />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/register" element={<Register />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/historial-pedidos" element={<HistorialPedidos />} />
+              <Route path="/inventario" element={<Inventory />} /> {/* ← AGREGAR ESTA RUTA */}
             </Routes>
           </div>
         </CartProvider>

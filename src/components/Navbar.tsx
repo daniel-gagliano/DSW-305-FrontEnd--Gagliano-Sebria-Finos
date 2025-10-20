@@ -48,6 +48,13 @@ const Navbar = () => {
             {isProfileMenuOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-[var(--color-navy)] rounded-md shadow-lg py-1 z-50 border border-[var(--color-midblue)]">
                 <Link 
+                  to="/inventario" 
+                  className="block px-4 py-2 text-sm text-[var(--color-pale)] hover:bg-[var(--color-midblue)] hover:text-[var(--color-sky)] transition"
+                  onClick={() => setProfileMenuOpen(false)}
+                >
+                  Gestión de Inventario
+                </Link>
+                <Link 
                   to="/historial-pedidos" 
                   className="block px-4 py-2 text-sm text-[var(--color-pale)] hover:bg-[var(--color-midblue)] hover:text-[var(--color-sky)] transition"
                   onClick={() => setProfileMenuOpen(false)}
