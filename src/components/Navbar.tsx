@@ -55,6 +55,13 @@ const Navbar = () => {
                   Gestión de Inventario
                 </Link>
                 <Link 
+                  to="/gestion-general" 
+                  className="block px-4 py-2 text-sm text-[var(--color-pale)] hover:bg-[var(--color-midblue)] hover:text-[var(--color-sky)] transition"
+                  onClick={() => setProfileMenuOpen(false)}
+                >
+                  Gestión General
+                </Link>                
+                <Link 
                   to="/historial-pedidos" 
                   className="block px-4 py-2 text-sm text-[var(--color-pale)] hover:bg-[var(--color-midblue)] hover:text-[var(--color-sky)] transition"
                   onClick={() => setProfileMenuOpen(false)}

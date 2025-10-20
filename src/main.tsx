@@ -13,6 +13,7 @@ import Inventory from "./pages/Inventory"; // ← AGREGAR ESTA LÍNEA
 import { CartProvider } from "./store/cartContext";
 import HistorialPedidos from "./pages/HistorialPedidos";
 import { AuthProvider } from "./store/authContext";
+import GestionGeneral from "./pages/GestionGeneral";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -30,6 +31,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route path="/register" element={<Register />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/historial-pedidos" element={<HistorialPedidos />} />
+              <Route path="/gestion-general" element={<GestionGeneral />} />
               <Route path="/inventario" element={<Inventory />} /> {/* ← AGREGAR ESTA RUTA */}
             </Routes>
           </div>
