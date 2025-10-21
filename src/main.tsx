@@ -3,16 +3,17 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import "./index.css";
 import Navbar from "./components/Navbar";
+import ProtectedRoute from "./components/ProtectedRoute"; // ← AGREGAR
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Cart from "./pages/Cart";
 import Register from "./pages/Register";
 import Checkout from "./pages/Checkout";
 import ProductDetail from "./pages/ProductDetail";
+import GestionGeneral from "./pages/GestionGeneral"; // ← AGREGAR
 import { CartProvider } from "./store/cartContext";
 import HistorialPedidos from "./pages/HistorialPedidos";
 import { AuthProvider } from "./store/authContext";
-import GestionGeneral from "./pages/GestionGeneral";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -29,8 +30,26 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route path="/cart" element={<Cart />} />
               <Route path="/register" element={<Register />} />
               <Route path="/checkout" element={<Checkout />} />
-              <Route path="/historial-pedidos" element={<HistorialPedidos />} />
-              <Route path="/gestion-general" element={<GestionGeneral />} />
+              
+              {/* Ruta protegida solo para CLIENTES */}
+              <Route 
+                path="/historial-pedidos" 
+                element={
+                  <ProtectedRoute requiredRole="CLIENTE">
+                    <HistorialPedidos />
+                  </ProtectedRoute>
+                } 
+              />
+              
+              {/* Ruta protegida solo para ADMIN */}
+              <Route 
+                path="/gestion-general" 
+                element={
+                  <ProtectedRoute requiredRole="ADMIN">
+                    <GestionGeneral />
+                  </ProtectedRoute>
+                } 
+              />
             </Routes>
           </div>
         </CartProvider>
