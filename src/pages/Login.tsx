@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosClient from "../api/axiosClient";
-import { useAuth } from "../store/authContext"; // AGREGAR ESTA LÍNEA
+import { useAuth } from "../store/authContext";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -10,7 +10,7 @@ export default function Login() {
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<string | null>(null);
   const navigate = useNavigate();
-  const { login } = useAuth(); // AGREGAR ESTA LÍNEA
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,9 +19,12 @@ export default function Login() {
     try {
       const resp = await axiosClient.post('/usuarios/login', { email, password });
       if (resp.status === 200 && resp.data.user) {
-        // Usar el método login del contexto en lugar de localStorage directo
+        // Obtener datos del usuario
         const userName = resp.data.user.name || resp.data.user.email || 'Usuario';
-        login(resp.data.user.id.toString(), userName);
+        const userRole = resp.data.user.rol || 'CLIENTE'; // ← AGREGAR ESTO
+        
+        // Usar el método login del contexto CON el rol
+        login(resp.data.user.id.toString(), userName, userRole); // ← ACTUALIZAR ESTO
         
         // Guardar token si existe
         if (resp.data.token) {
@@ -31,7 +34,12 @@ export default function Login() {
         setToast('Inicio de sesión exitoso');
         setTimeout(() => {
           setToast(null);
-          navigate('/productos');
+          // Redirigir según el rol ← AGREGAR ESTO
+          if (userRole === 'ADMIN') {
+            navigate('/gestion-general');
+          } else {
+            navigate('/productos');
+          }
         }, 1200);
       }
     } catch (err: any) {
