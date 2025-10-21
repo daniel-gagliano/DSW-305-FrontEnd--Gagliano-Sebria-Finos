@@ -9,7 +9,6 @@ import Cart from "./pages/Cart";
 import Register from "./pages/Register";
 import Checkout from "./pages/Checkout";
 import ProductDetail from "./pages/ProductDetail";
-import Inventory from "./pages/Inventory"; // ← AGREGAR ESTA LÍNEA
 import { CartProvider } from "./store/cartContext";
 import HistorialPedidos from "./pages/HistorialPedidos";
 import { AuthProvider } from "./store/authContext";
@@ -32,7 +31,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/historial-pedidos" element={<HistorialPedidos />} />
               <Route path="/gestion-general" element={<GestionGeneral />} />
-              <Route path="/inventario" element={<Inventory />} /> {/* ← AGREGAR ESTA RUTA */}
             </Routes>
           </div>
         </CartProvider>
