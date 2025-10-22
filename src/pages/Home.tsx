@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 
-// Define la estructura de un artículo para TypeScript
-// los campos tienen que coincidir con los del back
 interface Articulo {
   id_articulo: number;
   nombre: string;
@@ -16,7 +14,6 @@ const Home = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [sortOrder, setSortOrder] = useState<'none' | 'asc' | 'desc'>('none');
 
-  // lista ordenada segun el sortOrder
   const sortedArticulos = React.useMemo(() => {
     if (sortOrder === 'none') return articulos;
     const copy = [...articulos];
@@ -44,7 +41,7 @@ const Home = () => {
   }, []);
 
   return (
-  <div className="min-h-screen app-bg">
+    <div className="min-h-screen app-bg">
       <div className="w-full py-12 px-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-[var(--color-pale)]">Todos los Productos</h2>
@@ -69,6 +66,7 @@ const Home = () => {
                 id={articulo.id_articulo}
                 name={articulo.nombre}
                 price={articulo.precio}
+                stock={articulo.stock} 
                 imageUrl={"/placeholder.png"}
               />
             ))}
