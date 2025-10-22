@@ -56,7 +56,7 @@ const Checkout: React.FC = () => {
     pedido: datosPedido?.nro_pedido,
     monto: datosPedido?.precio_total,
     merchant: 'TuTienda',
-    timestamp: new Date().toISOString()
+    
   });
 
   if (!datosPedido) return null;
