@@ -14,6 +14,7 @@ import GestionGeneral from "./pages/GestionGeneral";
 import { CartProvider } from "./store/cartContext";
 import HistorialPedidos from "./pages/HistorialPedidos";
 import { AuthProvider } from "./store/authContext";
+import HistorialVentas from "./pages/HistorialVentas.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -84,7 +85,15 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
                 path="/gestion-general" 
                 element={
                   <ProtectedRoute allowedRoles={['ADMIN']}>
-                    <GestionGeneral />
+                    <GestionGeneral />                    
+                  </ProtectedRoute>
+                } 
+              />
+                            <Route 
+                path="/historial-ventas" 
+                element={
+                  <ProtectedRoute allowedRoles={['ADMIN']}>
+                    <HistorialVentas />                    
                   </ProtectedRoute>
                 } 
               />

@@ -60,9 +60,14 @@ const Navbar = () => {
 
         {/* Opción SOLO para ADMIN */}
         {isAuthenticated && userRole === 'ADMIN' && (
-          <Link to="/gestion-general" className="text-[var(--color-pale)] hover:text-[var(--color-sky)] transition">
+          <><Link to="/gestion-general" className="text-[var(--color-pale)] hover:text-[var(--color-sky)] transition">
             Gestión General
-          </Link>
+          </Link><Link
+            to="/historial-ventas"
+            className="text-[var(--color-pale)] hover:text-[var(--color-sky)] transition"
+          >
+              Historial de Ventas
+            </Link></>
         )}
 
         {/* Menú de usuario */}
