@@ -121,7 +121,7 @@ const HistorialPedidos = () => {
                 {/* Información de envío */}
                 <div className="mb-4 space-y-2">
                   <h3 className="text-lg font-semibold text-[var(--color-pale)] mb-3">
-                    📦 Información de Envío
+                     Información de Envío
                   </h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-[var(--color-pale)]">
                     <div>
@@ -144,7 +144,7 @@ const HistorialPedidos = () => {
                 {/* Lista de productos */}
                 <div className="mb-4">
                   <h3 className="text-lg font-semibold text-[var(--color-pale)] mb-3">
-                    🛍️ Productos
+                     Productos
                   </h3>
                   <ul className="space-y-2">
                     {/* El map itera sobre cada línea de pedido */}
