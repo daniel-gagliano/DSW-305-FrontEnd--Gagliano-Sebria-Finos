@@ -3,19 +3,24 @@ import { useAuth } from '../store/authContext';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
-  requiredRole?: 'ADMIN' | 'CLIENTE';
+  allowedRoles?: Array<'ADMIN' | 'CLIENTE' | 'public'>;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, requiredRole }) => {
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles = [] }) => {
   const { isAuthenticated, userRole } = useAuth();
+
+  // Si se permite acceso público, mostrar directamente
+  if (allowedRoles.includes('public')) {
+    return <>{children}</>;
+  }
 
   // Si no está autenticado, redirigir a login
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 
-  // Si se requiere un rol específico y no lo tiene, redirigir a home
-  if (requiredRole && userRole !== requiredRole) {
+  // Si hay roles especificados y el usuario no tiene ninguno de ellos
+  if (allowedRoles.length > 0 && userRole && !allowedRoles.includes(userRole)) {
     return <Navigate to="/" replace />;
   }
 

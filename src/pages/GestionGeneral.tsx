@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, X, MapPin, DollarSign, CreditCard, Map, Package } from 'lucide-react';
 
-// Tipos
 interface Articulo {
   id_articulo: number;
   nombre: string;
@@ -49,7 +48,6 @@ const GestionGeneral: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
   
-  // Estados para cada entidad
   const [articulos, setArticulos] = useState<Articulo[]>([]);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [localidades, setLocalidades] = useState<Localidad[]>([]);
@@ -179,7 +177,6 @@ const GestionGeneral: React.FC = () => {
       const id = getItemId(editingItem);
       let dataToSend = { ...formData };
 
-      // Convertir tipos según la sección
       if (activeSection === 'articulos') {
         dataToSend.precio = parseFloat(dataToSend.precio);
         dataToSend.stock = parseInt(dataToSend.stock);
@@ -277,78 +274,134 @@ const GestionGeneral: React.FC = () => {
     return [];
   };
 
+  const renderTableRows = () => {
+    const data = getCurrentData();
+    
+    return data.map((item: any) => {
+      let id, cells;
+      
+      if (activeSection === 'articulos') {
+        id = item.id_articulo;
+        cells = (
+          <>
+            <td className="px-4 py-3" style={{ color: '#c7d5e0' }}>{item.id_articulo}</td>
+            <td className="px-4 py-3 font-medium" style={{ color: '#c7d5e0' }}>{item.nombre}</td>
+            <td className="px-4 py-3" style={{ color: '#c7d5e0' }}>${item.precio}</td>
+            <td className="px-4 py-3" style={{ color: '#c7d5e0' }}>{item.stock}</td>
+          </>
+        );
+      } else if (activeSection === 'categorias') {
+        id = item.id_categoria;
+        cells = (
+          <>
+            <td className="px-4 py-3" style={{ color: '#c7d5e0' }}>{item.id_categoria}</td>
+            <td className="px-4 py-3 font-medium" style={{ color: '#c7d5e0' }}>{item.nom_categoria}</td>
+            <td className="px-4 py-3" style={{ color: '#c7d5e0' }}>{item.desc_categoria}</td>
+          </>
+        );
+      } else if (activeSection === 'localidades') {
+        id = item.id_localidad;
+        cells = (
+          <>
+            <td className="px-4 py-3" style={{ color: '#c7d5e0' }}>{item.id_localidad}</td>
+            <td className="px-4 py-3 font-medium" style={{ color: '#c7d5e0' }}>{item.nombre}</td>
+            <td className="px-4 py-3" style={{ color: '#c7d5e0' }}>{item.codigo_postal}</td>
+          </>
+        );
+      } else if (activeSection === 'provincias') {
+        id = item.cod_provincia;
+        cells = (
+          <>
+            <td className="px-4 py-3" style={{ color: '#c7d5e0' }}>{item.cod_provincia}</td>
+            <td className="px-4 py-3 font-medium" style={{ color: '#c7d5e0' }}>{item.descripcion}</td>
+            <td className="px-4 py-3" style={{ color: '#c7d5e0' }}>${item.costo_envio}</td>
+          </>
+        );
+      } else if (activeSection === 'descuentos') {
+        id = item.cod_descuento;
+        cells = (
+          <>
+            <td className="px-4 py-3" style={{ color: '#c7d5e0' }}>{item.cod_descuento}</td>
+            <td className="px-4 py-3 font-medium" style={{ color: '#c7d5e0' }}>{item.desc_descuento}</td>
+          </>
+        );
+      } else {
+        id = item.id_metodo;
+        cells = (
+          <>
+            <td className="px-4 py-3" style={{ color: '#c7d5e0' }}>{item.id_metodo}</td>
+            <td className="px-4 py-3 font-medium" style={{ color: '#c7d5e0' }}>{item.desc_metodo}</td>
+          </>
+        );
+      }
+
+      return (
+        <tr key={id} className="transition-colors" style={{ borderBottom: '1px solid #2a475e' }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#243447'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+        >
+          {cells}
+          <td className="px-4 py-3">
+            <div className="flex justify-end gap-2">
+              <button onClick={() => openModal(item)} className="p-2 rounded transition-colors" style={{ color: '#66c0f4' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2a475e'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              >
+                <Edit size={16} />
+              </button>
+              <button onClick={() => handleDelete(item)} className="p-2 rounded transition-colors" style={{ color: '#ff6b6b' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2a475e'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              >
+                <Trash2 size={16} />
+              </button>
+            </div>
+          </td>
+        </tr>
+      );
+    });
+  };
+
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen p-6" style={{ backgroundColor: '#171a21' }}>
       <div className="max-w-7xl mx-auto">
-        <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Gestión Administrativa</h1>
-          <p className="text-gray-600">Panel de administración completo</p>
+        <div className="rounded-lg shadow-lg p-6 mb-6" style={{ backgroundColor: '#1b2838' }}>
+          <h1 className="text-3xl font-bold mb-2" style={{ color: '#c7d5e0' }}>Gestión Administrativa</h1>
+          <p style={{ color: '#8f98a0' }}>Panel de administración completo</p>
         </div>
 
-        {/* Tabs */}
-        <div className="bg-white rounded-lg shadow-sm mb-6">
-          <div className="flex flex-wrap border-b border-gray-200">
-            <button
-              onClick={() => setActiveSection('articulos')}
-              className={`flex items-center gap-2 px-4 py-3 font-medium ${
-                activeSection === 'articulos' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-600'
-              }`}
-            >
-              <Package size={18} />
-              Artículos
-            </button>
-            <button
-              onClick={() => setActiveSection('categorias')}
-              className={`flex items-center gap-2 px-4 py-3 font-medium ${
-                activeSection === 'categorias' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-600'
-              }`}
-            >
-              <Package size={18} />
-              Categorías
-            </button>
-            <button
-              onClick={() => setActiveSection('localidades')}
-              className={`flex items-center gap-2 px-4 py-3 font-medium ${
-                activeSection === 'localidades' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-600'
-              }`}
-            >
-              <MapPin size={18} />
-              Localidades
-            </button>
-            <button
-              onClick={() => setActiveSection('provincias')}
-              className={`flex items-center gap-2 px-4 py-3 font-medium ${
-                activeSection === 'provincias' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-600'
-              }`}
-            >
-              <Map size={18} />
-              Provincias
-            </button>
-            <button
-              onClick={() => setActiveSection('descuentos')}
-              className={`flex items-center gap-2 px-4 py-3 font-medium ${
-                activeSection === 'descuentos' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-600'
-              }`}
-            >
-              <DollarSign size={18} />
-              Descuentos
-            </button>
-            <button
-              onClick={() => setActiveSection('metodos')}
-              className={`flex items-center gap-2 px-4 py-3 font-medium ${
-                activeSection === 'metodos' ? 'border-b-2 border-blue-600 text-blue-600' : 'text-gray-600'
-              }`}
-            >
-              <CreditCard size={18} />
-              Métodos de Pago
-            </button>
+        <div className="rounded-lg shadow-lg mb-6" style={{ backgroundColor: '#1b2838' }}>
+          <div className="flex flex-wrap" style={{ borderBottom: '1px solid #2a475e' }}>
+            {[
+              { key: 'articulos', label: 'Artículos', icon: Package },
+              { key: 'categorias', label: 'Categorías', icon: Package },
+              { key: 'localidades', label: 'Localidades', icon: MapPin },
+              { key: 'provincias', label: 'Provincias', icon: Map },
+              { key: 'descuentos', label: 'Descuentos', icon: DollarSign },
+              { key: 'metodos', label: 'Métodos de Pago', icon: CreditCard }
+            ].map(({ key, label, icon: Icon }) => (
+              <button
+                key={key}
+                onClick={() => setActiveSection(key as Section)}
+                className={`flex items-center gap-2 px-4 py-3 font-medium transition-colors ${
+                  activeSection === key ? 'border-b-2' : ''
+                }`}
+                style={{
+                  borderColor: activeSection === key ? '#66c0f4' : 'transparent',
+                  color: activeSection === key ? '#66c0f4' : '#8f98a0',
+                  backgroundColor: 'transparent'
+                }}
+              >
+                <Icon size={18} />
+                {label}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Contenido */}
-        <div className="bg-white rounded-lg shadow-sm p-6">
+        <div className="rounded-lg shadow-lg p-6" style={{ backgroundColor: '#1b2838' }}>
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-gray-900">
+            <h2 className="text-xl font-bold" style={{ color: '#c7d5e0' }}>
               {activeSection === 'articulos' && 'Listado de Artículos'}
               {activeSection === 'categorias' && 'Listado de Categorías'}
               {activeSection === 'localidades' && 'Listado de Localidades'}
@@ -359,158 +412,58 @@ const GestionGeneral: React.FC = () => {
             <button
               onClick={() => openModal()}
               disabled={loading}
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 flex items-center gap-2 disabled:opacity-50"
+              className="px-6 py-2 rounded-lg flex items-center gap-2 disabled:opacity-50 transition-colors"
+              style={{ backgroundColor: '#66c0f4', color: '#171a21' }}
+              onMouseEnter={(e) => { if (!loading) e.currentTarget.style.backgroundColor = '#5ab3e8'; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#66c0f4'; }}
             >
               <Plus size={20} />
               Agregar
             </button>
           </div>
 
-          {loading && <p className="text-center py-8 text-gray-600">Cargando...</p>}
-
-          {!loading && getCurrentData().length === 0 && (
-            <p className="text-center py-8 text-gray-600">No hay registros</p>
-          )}
+          {loading && <p className="text-center py-8" style={{ color: '#8f98a0' }}>Cargando...</p>}
+          {!loading && getCurrentData().length === 0 && <p className="text-center py-8" style={{ color: '#8f98a0' }}>No hay registros</p>}
 
           {!loading && getCurrentData().length > 0 && (
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b">
+                <thead style={{ backgroundColor: '#2a475e', borderBottom: '1px solid #3a5771' }}>
                   <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">ID</th>
+                    <th className="px-4 py-3 text-left text-xs font-medium uppercase" style={{ color: '#8f98a0' }}>ID</th>
                     {activeSection === 'articulos' && (
                       <>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">Nombre</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">Precio</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">Stock</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium uppercase" style={{ color: '#8f98a0' }}>Nombre</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium uppercase" style={{ color: '#8f98a0' }}>Precio</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium uppercase" style={{ color: '#8f98a0' }}>Stock</th>
                       </>
                     )}
                     {activeSection === 'categorias' && (
                       <>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">Nombre</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">Descripción</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium uppercase" style={{ color: '#8f98a0' }}>Nombre</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium uppercase" style={{ color: '#8f98a0' }}>Descripción</th>
                       </>
                     )}
                     {activeSection === 'localidades' && (
                       <>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">Nombre</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">Código Postal</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium uppercase" style={{ color: '#8f98a0' }}>Nombre</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium uppercase" style={{ color: '#8f98a0' }}>Código Postal</th>
                       </>
                     )}
                     {activeSection === 'provincias' && (
                       <>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">Nombre</th>
-                        <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">Costo Envío</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium uppercase" style={{ color: '#8f98a0' }}>Nombre</th>
+                        <th className="px-4 py-3 text-left text-xs font-medium uppercase" style={{ color: '#8f98a0' }}>Costo Envío</th>
                       </>
                     )}
                     {(activeSection === 'descuentos' || activeSection === 'metodos') && (
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-600 uppercase">Descripción</th>
+                      <th className="px-4 py-3 text-left text-xs font-medium uppercase" style={{ color: '#8f98a0' }}>Descripción</th>
                     )}
-                    <th className="px-4 py-3 text-right text-xs font-medium text-gray-600 uppercase">Acciones</th>
+                    <th className="px-4 py-3 text-right text-xs font-medium uppercase" style={{ color: '#8f98a0' }}>Acciones</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y">
-                  {activeSection === 'articulos' && articulos.map((item) => (
-                    <tr key={item.id_articulo} className="hover:bg-gray-50">
-                      <td className="px-4 py-3">{item.id_articulo}</td>
-                      <td className="px-4 py-3 font-medium">{item.nombre}</td>
-                      <td className="px-4 py-3">${item.precio}</td>
-                      <td className="px-4 py-3">{item.stock}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex justify-end gap-2">
-                          <button onClick={() => openModal(item)} className="p-2 text-blue-600 hover:bg-blue-50 rounded">
-                            <Edit size={16} />
-                          </button>
-                          <button onClick={() => handleDelete(item)} className="p-2 text-red-600 hover:bg-red-50 rounded">
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                  {activeSection === 'categorias' && categorias.map((item) => (
-                    <tr key={item.id_categoria} className="hover:bg-gray-50">
-                      <td className="px-4 py-3">{item.id_categoria}</td>
-                      <td className="px-4 py-3 font-medium">{item.nom_categoria}</td>
-                      <td className="px-4 py-3">{item.desc_categoria}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex justify-end gap-2">
-                          <button onClick={() => openModal(item)} className="p-2 text-blue-600 hover:bg-blue-50 rounded">
-                            <Edit size={16} />
-                          </button>
-                          <button onClick={() => handleDelete(item)} className="p-2 text-red-600 hover:bg-red-50 rounded">
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                  {activeSection === 'localidades' && localidades.map((item) => (
-                    <tr key={item.id_localidad} className="hover:bg-gray-50">
-                      <td className="px-4 py-3">{item.id_localidad}</td>
-                      <td className="px-4 py-3 font-medium">{item.nombre}</td>
-                      <td className="px-4 py-3">{item.codigo_postal}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex justify-end gap-2">
-                          <button onClick={() => openModal(item)} className="p-2 text-blue-600 hover:bg-blue-50 rounded">
-                            <Edit size={16} />
-                          </button>
-                          <button onClick={() => handleDelete(item)} className="p-2 text-red-600 hover:bg-red-50 rounded">
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                  {activeSection === 'provincias' && provincias.map((item) => (
-                    <tr key={item.cod_provincia} className="hover:bg-gray-50">
-                      <td className="px-4 py-3">{item.cod_provincia}</td>
-                      <td className="px-4 py-3 font-medium">{item.descripcion}</td>
-                      <td className="px-4 py-3">${item.costo_envio}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex justify-end gap-2">
-                          <button onClick={() => openModal(item)} className="p-2 text-blue-600 hover:bg-blue-50 rounded">
-                            <Edit size={16} />
-                          </button>
-                          <button onClick={() => handleDelete(item)} className="p-2 text-red-600 hover:bg-red-50 rounded">
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                  {activeSection === 'descuentos' && descuentos.map((item) => (
-                    <tr key={item.cod_descuento} className="hover:bg-gray-50">
-                      <td className="px-4 py-3">{item.cod_descuento}</td>
-                      <td className="px-4 py-3 font-medium">{item.desc_descuento}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex justify-end gap-2">
-                          <button onClick={() => openModal(item)} className="p-2 text-blue-600 hover:bg-blue-50 rounded">
-                            <Edit size={16} />
-                          </button>
-                          <button onClick={() => handleDelete(item)} className="p-2 text-red-600 hover:bg-red-50 rounded">
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                  {activeSection === 'metodos' && metodosPago.map((item) => (
-                    <tr key={item.id_metodo} className="hover:bg-gray-50">
-                      <td className="px-4 py-3">{item.id_metodo}</td>
-                      <td className="px-4 py-3 font-medium">{item.desc_metodo}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex justify-end gap-2">
-                          <button onClick={() => openModal(item)} className="p-2 text-blue-600 hover:bg-blue-50 rounded">
-                            <Edit size={16} />
-                          </button>
-                          <button onClick={() => handleDelete(item)} className="p-2 text-red-600 hover:bg-red-50 rounded">
-                            <Trash2 size={16} />
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
+                <tbody style={{ borderColor: '#2a475e' }}>
+                  {renderTableRows()}
                 </tbody>
               </table>
             </div>
@@ -518,13 +471,15 @@ const GestionGeneral: React.FC = () => {
         </div>
       </div>
 
-      {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
-            <div className="p-6 border-b flex justify-between items-center">
-              <h2 className="text-xl font-bold">{editingItem ? 'Editar' : 'Agregar'}</h2>
-              <button onClick={closeModal} className="p-2 hover:bg-gray-100 rounded">
+        <div className="fixed inset-0 flex items-center justify-center p-4 z-50" style={{ backgroundColor: 'rgba(0, 0, 0, 0.75)' }}>
+          <div className="rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto" style={{ backgroundColor: '#1b2838' }}>
+            <div className="p-6 flex justify-between items-center" style={{ borderBottom: '1px solid #2a475e' }}>
+              <h2 className="text-xl font-bold" style={{ color: '#c7d5e0' }}>{editingItem ? 'Editar' : 'Agregar'}</h2>
+              <button onClick={closeModal} className="p-2 rounded transition-colors" style={{ color: '#8f98a0' }}
+                onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2a475e'}
+                onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+              >
                 <X size={20} />
               </button>
             </div>
@@ -533,62 +488,41 @@ const GestionGeneral: React.FC = () => {
               {activeSection === 'articulos' && (
                 <>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Nombre *</label>
-                    <input
-                      type="text"
-                      name="nombre"
-                      value={formData.nombre || ''}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-2 border rounded-lg"
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#c7d5e0' }}>Nombre *</label>
+                    <input type="text" name="nombre" value={formData.nombre || ''} onChange={handleInputChange} required
+                      className="w-full px-4 py-2 rounded-lg" style={{ backgroundColor: '#2a475e', color: '#c7d5e0', border: '1px solid #3a5771' }}
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Descripción *</label>
-                    <textarea
-                      name="descripcion"
-                      value={formData.descripcion || ''}
-                      onChange={handleInputChange}
-                      required
-                      rows={3}
-                      className="w-full px-4 py-2 border rounded-lg"
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#c7d5e0' }}>Descripción *</label>
+                    <textarea name="descripcion" value={formData.descripcion || ''} onChange={handleInputChange} required rows={3}
+                      className="w-full px-4 py-2 rounded-lg" style={{ backgroundColor: '#2a475e', color: '#c7d5e0', border: '1px solid #3a5771' }}
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Precio *</label>
-                    <input
-                      type="number"
-                      name="precio"
-                      value={formData.precio || ''}
-                      onChange={handleInputChange}
-                      required
-                      step="0.01"
-                      className="w-full px-4 py-2 border rounded-lg"
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#c7d5e0' }}>Precio *</label>
+                    <input type="number" name="precio" value={formData.precio || ''} onChange={handleInputChange} required step="0.01"
+                      className="w-full px-4 py-2 rounded-lg" style={{ backgroundColor: '#2a475e', color: '#c7d5e0', border: '1px solid #3a5771' }}
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Stock *</label>
-                    <input
-                      type="number"
-                      name="stock"
-                      value={formData.stock || ''}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-2 border rounded-lg"
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#c7d5e0' }}>Stock *</label>
+                    <input type="number" name="stock" value={formData.stock || ''} onChange={handleInputChange} required
+                      className="w-full px-4 py-2 rounded-lg" style={{ backgroundColor: '#2a475e', color: '#c7d5e0', border: '1px solid #3a5771' }}
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Categorías *</label>
-                    <div className="border rounded-lg p-3 max-h-40 overflow-y-auto">
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#c7d5e0' }}>Categorías *</label>
+                    <div className="rounded-lg p-3 max-h-40 overflow-y-auto" style={{ border: '1px solid #3a5771', backgroundColor: '#2a475e' }}>
                       {categorias.map(cat => (
-                        <label key={cat.id_categoria} className="flex items-center gap-2 p-2 hover:bg-gray-50">
-                          <input
-                            type="checkbox"
-                            checked={formData.categorias?.includes(cat.id_categoria) || false}
-                            onChange={() => handleCategoryToggle(cat.id_categoria)}
-                            className="w-4 h-4"
+                        <label key={cat.id_categoria} className="flex items-center gap-2 p-2 rounded transition-colors cursor-pointer"
+                          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#1b2838'}
+                          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                        >
+                          <input type="checkbox" checked={formData.categorias?.includes(cat.id_categoria) || false}
+                            onChange={() => handleCategoryToggle(cat.id_categoria)} className="w-4 h-4"
                           />
-                          <span className="text-sm">{cat.nom_categoria}</span>
+                          <span className="text-sm" style={{ color: '#c7d5e0' }}>{cat.nom_categoria}</span>
                         </label>
                       ))}
                     </div>
@@ -599,25 +533,15 @@ const GestionGeneral: React.FC = () => {
               {activeSection === 'categorias' && (
                 <>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Nombre *</label>
-                    <input
-                      type="text"
-                      name="nom_categoria"
-                      value={formData.nom_categoria || ''}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-2 border rounded-lg"
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#c7d5e0' }}>Nombre *</label>
+                    <input type="text" name="nom_categoria" value={formData.nom_categoria || ''} onChange={handleInputChange} required
+                      className="w-full px-4 py-2 rounded-lg" style={{ backgroundColor: '#2a475e', color: '#c7d5e0', border: '1px solid #3a5771' }}
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Descripción *</label>
-                    <textarea
-                      name="desc_categoria"
-                      value={formData.desc_categoria || ''}
-                      onChange={handleInputChange}
-                      required
-                      rows={3}
-                      className="w-full px-4 py-2 border rounded-lg"
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#c7d5e0' }}>Descripción *</label>
+                    <textarea name="desc_categoria" value={formData.desc_categoria || ''} onChange={handleInputChange} required rows={3}
+                      className="w-full px-4 py-2 rounded-lg" style={{ backgroundColor: '#2a475e', color: '#c7d5e0', border: '1px solid #3a5771' }}
                     />
                   </div>
                 </>
@@ -626,35 +550,21 @@ const GestionGeneral: React.FC = () => {
               {activeSection === 'localidades' && (
                 <>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Nombre *</label>
-                    <input
-                      type="text"
-                      name="nombre"
-                      value={formData.nombre || ''}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-2 border rounded-lg"
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#c7d5e0' }}>Nombre *</label>
+                    <input type="text" name="nombre" value={formData.nombre || ''} onChange={handleInputChange} required
+                      className="w-full px-4 py-2 rounded-lg" style={{ backgroundColor: '#2a475e', color: '#c7d5e0', border: '1px solid #3a5771' }}
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Código Postal *</label>
-                    <input
-                      type="text"
-                      name="codigo_postal"
-                      value={formData.codigo_postal || ''}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-2 border rounded-lg"
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#c7d5e0' }}>Código Postal *</label>
+                    <input type="text" name="codigo_postal" value={formData.codigo_postal || ''} onChange={handleInputChange} required
+                      className="w-full px-4 py-2 rounded-lg" style={{ backgroundColor: '#2a475e', color: '#c7d5e0', border: '1px solid #3a5771' }}
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Provincia *</label>
-                    <select
-                      name="cod_provincia"
-                      value={formData.cod_provincia || ''}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-2 border rounded-lg"
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#c7d5e0' }}>Provincia *</label>
+                    <select name="cod_provincia" value={formData.cod_provincia || ''} onChange={handleInputChange} required
+                      className="w-full px-4 py-2 rounded-lg" style={{ backgroundColor: '#2a475e', color: '#c7d5e0', border: '1px solid #3a5771' }}
                     >
                       <option value="">Selecciona</option>
                       {provincias.map(p => (
@@ -668,26 +578,15 @@ const GestionGeneral: React.FC = () => {
               {activeSection === 'provincias' && (
                 <>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Nombre *</label>
-                    <input
-                      type="text"
-                      name="descripcion"
-                      value={formData.descripcion || ''}
-                      onChange={handleInputChange}
-                      required
-                      className="w-full px-4 py-2 border rounded-lg"
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#c7d5e0' }}>Nombre *</label>
+                    <input type="text" name="descripcion" value={formData.descripcion || ''} onChange={handleInputChange} required
+                      className="w-full px-4 py-2 rounded-lg" style={{ backgroundColor: '#2a475e', color: '#c7d5e0', border: '1px solid #3a5771' }}
                     />
                   </div>
                   <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Costo Envío *</label>
-                    <input
-                      type="number"
-                      name="costo_envio"
-                      value={formData.costo_envio || ''}
-                      onChange={handleInputChange}
-                      required
-                      step="0.01"
-                      className="w-full px-4 py-2 border rounded-lg"
+                    <label className="block text-sm font-medium mb-2" style={{ color: '#c7d5e0' }}>Costo Envío *</label>
+                    <input type="number" name="costo_envio" value={formData.costo_envio || ''} onChange={handleInputChange} required step="0.01"
+                      className="w-full px-4 py-2 rounded-lg" style={{ backgroundColor: '#2a475e', color: '#c7d5e0', border: '1px solid #3a5771' }}
                     />
                   </div>
                 </>
@@ -695,44 +594,36 @@ const GestionGeneral: React.FC = () => {
 
               {activeSection === 'descuentos' && (
                 <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2">Descripción *</label>
-                  <input
-                    type="text"
-                    name="desc_descuento"
-                    value={formData.desc_descuento || ''}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-2 border rounded-lg"
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#c7d5e0' }}>Descripción *</label>
+                  <input type="text" name="desc_descuento" value={formData.desc_descuento || ''} onChange={handleInputChange} required
+                    className="w-full px-4 py-2 rounded-lg" style={{ backgroundColor: '#2a475e', color: '#c7d5e0', border: '1px solid #3a5771' }}
                   />
                 </div>
               )}
 
               {activeSection === 'metodos' && (
                 <div className="mb-4">
-                  <label className="block text-sm font-medium mb-2">Descripción *</label>
-                  <input
-                    type="text"
-                    name="desc_metodo"
-                    value={formData.desc_metodo || ''}
-                    onChange={handleInputChange}
-                    required
-                    className="w-full px-4 py-2 border rounded-lg"
+                  <label className="block text-sm font-medium mb-2" style={{ color: '#c7d5e0' }}>Descripción *</label>
+                  <input type="text" name="desc_metodo" value={formData.desc_metodo || ''} onChange={handleInputChange} required
+                    className="w-full px-4 py-2 rounded-lg" style={{ backgroundColor: '#2a475e', color: '#c7d5e0', border: '1px solid #3a5771' }}
                   />
                 </div>
               )}
 
               <div className="flex gap-3 mt-6">
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="flex-1 px-6 py-2 border rounded-lg hover:bg-gray-50"
+                <button type="button" onClick={closeModal}
+                  className="flex-1 px-6 py-2 rounded-lg transition-colors"
+                  style={{ border: '1px solid #3a5771', color: '#c7d5e0', backgroundColor: 'transparent' }}
+                  onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#2a475e'}
+                  onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
                 >
                   Cancelar
                 </button>
-                <button
-                  type="submit"
-                  disabled={loading}
-                  className="flex-1 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+                <button type="submit" disabled={loading}
+                  className="flex-1 px-6 py-2 rounded-lg disabled:opacity-50 transition-colors"
+                  style={{ backgroundColor: '#66c0f4', color: '#171a21' }}
+                  onMouseEnter={(e) => { if (!loading) e.currentTarget.style.backgroundColor = '#5ab3e8'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = '#66c0f4'; }}
                 >
                   {loading ? 'Guardando...' : 'Guardar'}
                 </button>
