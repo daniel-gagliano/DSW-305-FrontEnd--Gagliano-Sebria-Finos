@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, X, MapPin, DollarSign, CreditCard, Map, Package } from 'lucide-react';
+import { Plus, Edit, Trash2, X, MapPin, DollarSign, CreditCard, Map as MapIcon, Package } from 'lucide-react';
 
 interface Articulo {
   id_articulo: number;
@@ -7,6 +7,7 @@ interface Articulo {
   descripcion: string;
   stock: number;
   precio: number;
+  activo: boolean;
   ar_ca?: { categoria: Categoria }[];
 }
 
@@ -213,18 +214,27 @@ const GestionGeneral: React.FC = () => {
   };
 
   const handleDelete = async (item: any) => {
-    if (!confirm('¿Eliminar este registro?')) return;
+    const messages = {
+      articulos: '¿Desactivar este artículo? Los pedidos existentes no se verán afectados.',
+      categorias: '¿Desactivar esta categoría? Los artículos asociados mantendrán su historial.',
+      localidades: '¿Desactivar esta localidad? Los pedidos existentes no se verán afectados.',
+      provincias: '¿Desactivar esta provincia? Las localidades y pedidos existentes no se verán afectados.',
+      descuentos: '¿Desactivar este descuento?',
+      metodos: '¿Desactivar este método de pago? Los pedidos existentes no se verán afectados.'
+    };
+
+    if (!confirm(messages[activeSection as keyof typeof messages])) return;
 
     setLoading(true);
     try {
       const endpoint = getEndpoint();
       const id = getItemId(item);
       await fetch(`${API_URL}${endpoint}/${id}`, { method: 'DELETE' });
-      alert('Eliminado correctamente');
+      alert('Desactivado correctamente');
       await loadData();
     } catch (error) {
       console.error('Error:', error);
-      alert('Error al eliminar');
+      alert('Error al desactivar el elemento');
     } finally {
       setLoading(false);
     }
@@ -376,7 +386,7 @@ const GestionGeneral: React.FC = () => {
               { key: 'articulos', label: 'Artículos', icon: Package },
               { key: 'categorias', label: 'Categorías', icon: Package },
               { key: 'localidades', label: 'Localidades', icon: MapPin },
-              { key: 'provincias', label: 'Provincias', icon: Map },
+              { key: 'provincias', label: 'Provincias', icon: MapIcon },
               { key: 'descuentos', label: 'Descuentos', icon: DollarSign },
               { key: 'metodos', label: 'Métodos de Pago', icon: CreditCard }
             ].map(({ key, label, icon: Icon }) => (

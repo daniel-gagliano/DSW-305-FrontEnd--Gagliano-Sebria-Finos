@@ -31,7 +31,7 @@ const Navbar = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 bg-[var(--color-midblue)] py-4 px-6 flex justify-between items-center z-50">
       <Link to={userRole === 'ADMIN' ? '/gestion-general' : '/'} className="text-2xl font-bold text-[var(--color-sky)]">
-        Gordito's Store
+        Mi Tiendita
       </Link>
       <div className="flex items-center gap-6">
         {/* Opciones para NO autenticados */}
