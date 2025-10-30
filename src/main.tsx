@@ -25,8 +25,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <div className="pt-20">
             <Routes>
               {/* Rutas públicas (sin autenticación) */}
-              <Route path="/login" element={<Login />} />
-              <Route path="/productos" element={<Login />} />
+              <Route path="/login" element={<Login />} />              
               <Route path="/register" element={<Register />} />
               
               {/* Rutas SOLO para NO autenticados o CLIENTES */}

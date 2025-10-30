@@ -189,7 +189,7 @@ const Cart: React.FC = () => {
 
       console.log('Payload a enviar:', payload);
 
-      // Hace la petición POST al endpoint de pedidos
+      // Hace la petición POST al endpoint de creación de pedidos
       const res = await axiosClient.post('/pedidos', payload);
       
       console.log('Respuesta del servidor:', res.data);

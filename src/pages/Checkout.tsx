@@ -55,7 +55,7 @@ const Checkout: React.FC = () => {
   const datosQR = JSON.stringify({
     pedido: datosPedido?.nro_pedido,
     monto: datosPedido?.precio_total,
-    merchant: 'TuTienda',
+    merchant: 'Mi Tiendita',
     
   });
 
