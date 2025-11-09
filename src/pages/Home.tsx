@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import ProductCard from "../components/ProductCard";
+import axiosClient from "../api/axiosClient";
 
 interface Categoria {
   id_categoria: number;
@@ -30,24 +31,20 @@ const Home = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("Todas");
 
   // Traer artículos del backend
-  useEffect(() => {
-    const obtenerArticulos = async () => {
-      try {
-        const response = await fetch("http://localhost:3000/articulos");
-        if (!response.ok) throw new Error("Error al obtener los artículos");
-        const data: Articulo[] = await response.json();
-        setArticulos(data);
-      } catch (error) {
-        console.error("Error:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+useEffect(() => {
+  const obtenerArticulos = async () => {
+    try {
+      const response = await axiosClient.get("/articulos");
+      setArticulos(response.data); }
 
-    obtenerArticulos();
-  }, []);
+      catch (error) { console.error("Error:", error); }
+      finally { setLoading(false); }
+  };
 
-  //  Obtener categorías únicas
+  obtenerArticulos(); 
+}, []);
+
+  //Obtener categorías únicas
   const categorias = useMemo(() => {
     const setCategorias = new Set<string>();
     articulos.forEach((art) => {
@@ -60,7 +57,8 @@ const Home = () => {
   }, [articulos]);
 
   // Filtrar y ordenar
-  const articulosFiltrados = useMemo(() => {
+  const articulosFiltrados = useMemo(() => 
+  {
     let filtrados = [...articulos];
 
     // Buscar por nombre
@@ -125,23 +123,22 @@ const Home = () => {
             <select
               className="border rounded px-3 py-1 bg-[var(--color-pale)] text-[var(--color-very-dark)]"
               value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value as any)}
-            >
-              
+              onChange={(e) => setSortOrder(e.target.value as any)}>
+
               <option value="asc">Menor Precio</option>
               <option value="desc">Mayor Precio</option>
             </select>
           </div>
         </div>
 
-        {loading ? (
-          <div className="text-center text-lg">Cargando productos...</div>
-        ) : articulosFiltrados.length === 0 ? (
+        {loading ?
+        ( <div className="text-center text-lg">Cargando productos...</div>) : articulosFiltrados.length === 0 ? (
+          
           <div className="text-center text-lg text-[var(--color-pale)]">
             No se encontraron productos.
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
+          </div> ) : ( 
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
             {articulosFiltrados.map((articulo) => (
               <ProductCard
                 key={articulo.id_articulo}
@@ -152,6 +149,7 @@ const Home = () => {
                 imageUrl={"/placeholder.png"}
               />
             ))}
+
           </div>
         )}
       </div>
